@@ -15,7 +15,8 @@ The tool may use lane, stage, immediate goal, recipient, access route, relations
 - what to bring or establish first;
 - what can wait;
 - assumptions and limits;
-- an optional path into the deeper map.
+- an optional path into the deeper map;
+- a local download preserving the move, finish line, reasons, expert context, parked work, and limits.
 
 ## Boundaries
 

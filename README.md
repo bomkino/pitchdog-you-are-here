@@ -27,6 +27,8 @@ No typing. No fake interpretation. Every answer belongs to a branch in the decis
 
 One primary move, not a report avalanche. The result explains why, names the minimum material to bring, flags prerequisites, and lets you go deeper only if you choose.
 
+The downloadable route now carries the full useful answer—move, finish line, reasoning, expert changes, parked work, and limits—so the context does not vanish the moment the browser closes.
+
 This is pitch-work routing—not crisis assessment, therapy, legal advice, or a personality quiz.
 
 Selections stay in the browser. No runtime AI, account, database, analytics, upload, or email gate.

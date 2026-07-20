@@ -18,7 +18,7 @@ const STEPS: readonly Step[] = [
   { key: "trigger", kicker: "The live situation", question: "What is actually happening now?", note: "Not your five-year dream. The live fact this next move must answer.", choices: TRIGGERS, rides: ["quick", "expert"] },
   { key: "desiredDecision", kicker: "The next decision", question: "What should somebody do next?", note: "Choose the closest bounded action. The pitch follows this—not the other way round.", choices: DECISIONS, rides: ["quick", "expert"] },
   { key: "recipient", kicker: "The owner", question: "Who can make that decision?", note: "A target audience cannot answer an email. Choose the real decision owner.", choices: RECIPIENTS, rides: ["quick", "expert"] },
-  { key: "access", kicker: "The route", question: "How can this honestly reach them?", note: "A name on a dream list is not access. No judgement; just useful physics.", choices: ACCESS, rides: ["quick", "expert"] },
+  { key: "access", kicker: "The route", question: "How can this honestly reach them?", note: "A name on a dream list is not access. No judgment; just useful physics.", choices: ACCESS, rides: ["quick", "expert"] },
   { key: "stage", kicker: "The proof", question: "How real is the core thing today?", note: "Packaging cannot quietly do the prototype, proposal, script, pilot, or use-test’s job.", choices: STAGES, rides: ["expert"] },
   { key: "requirementStatus", kicker: "The instruction", question: "How current is what they asked for?", note: "Current instructions beat folklore. Old screenshots do not acquire authority with age.", choices: REQUIREMENTS, rides: ["expert"], when: (a) => ["material_requested", "formal_process"].includes(a.trigger ?? "") },
   { key: "delivery", kicker: "The encounter", question: "How will they meet the material?", note: "A room, inbox, portal, and internal table need different objects.", choices: DELIVERIES, rides: ["expert"] },
@@ -56,7 +56,7 @@ function landingPage(): string {
 
 function flowPage(): string {
   const active = steps(); const step = active[state.step]!; const selected = state.answers[step.key];
-  return `<section class="question-page">${progress(`${state.ride === "expert" ? "Expert" : "Quick"} next-move compass`, state.step, active.length)}<div class="question-layout"><div class="question-copy"><button class="question-back" id="flow-back" type="button">← ${state.step ? "Previous question" : "Choose another route"}</button><div class="question-art" aria-hidden="true"><img src="/assets/hero.webp" alt=""></div><p class="scope-tag">You Are Here · ${state.ride === "expert" ? "expert" : "quick"} route</p><p class="kicker">${step.kicker}</p><h1 data-page-heading tabindex="-1">${step.question}</h1><p>${step.note}</p></div><div class="answers-panel"><div class="answers-inner">${choiceGrid(step.choices, "flow-choice", typeof selected === "string" ? selected : undefined)}</div></div></div></section>`;
+  return `<section class="question-page">${progress(`${state.ride === "expert" ? "Expert" : "Quick"} next-move compass`, state.step, active.length)}<div class="question-layout"><div class="question-copy"><button class="question-back" id="flow-back" type="button">← ${state.step ? "Previous question" : "Choose another route"}</button><div class="question-art" aria-hidden="true"><img src="/assets/hero.webp" alt=""></div><p class="scope-tag">You Are Here · ${state.ride === "expert" ? "expert" : "quick"} route</p><p class="kicker">${step.kicker}</p><h1 data-page-heading tabindex="-1">${step.question}</h1><p>${step.note}</p></div><div class="answers-panel"><div class="answers-inner"><p class="answers-instruction">Pick the closest live fact. You can change it.</p>${choiceGrid(step.choices, "flow-choice", typeof selected === "string" ? selected : undefined)}</div></div></div></section>`;
 }
 
 function resultPage(): string {
@@ -69,14 +69,28 @@ function resultPage(): string {
   </section>`;
 }
 
+function setAnswer(key: keyof Answers, value: string): void {
+  const target = state.answers as unknown as Record<string, unknown>;
+  target[key] = value;
+  if (key === "trigger" && !["material_requested", "formal_process"].includes(value)) delete target.requirementStatus;
+}
+
 function advance(): void { const active = steps(); if (state.step < active.length - 1) state.step += 1; else { state.result = decide(state.answers); state.phase = "result"; } save(); render(true); }
 function bindEvents(): void {
+  document.querySelector(".brand")?.addEventListener("click", (event) => { event.preventDefault(); state.phase = "landing"; state.ride = undefined; state.result = undefined; save(); render(true); });
   document.querySelectorAll<HTMLButtonElement>("[data-ride]").forEach((button) => button.addEventListener("click", () => { state.ride = button.dataset.ride as Ride; state.phase = "flow"; state.step = 0; state.answers = {}; save(); render(true); }));
-  document.querySelectorAll<HTMLButtonElement>("[data-flow-choice]").forEach((button) => button.addEventListener("click", () => { const step = steps()[state.step]!; (state.answers as unknown as Record<string, unknown>)[step.key] = button.dataset.flowChoice ?? ""; advance(); }));
+  document.querySelectorAll<HTMLButtonElement>("[data-flow-choice]").forEach((button) => button.addEventListener("click", () => { const step = steps()[state.step]!; setAnswer(step.key, button.dataset.flowChoice ?? ""); advance(); }));
   document.querySelector("#flow-back")?.addEventListener("click", () => { if (state.step > 0) state.step -= 1; else state.phase = "landing"; save(); render(true); });
   document.querySelector("#change-answers")?.addEventListener("click", () => { state.phase = "flow"; state.step = Math.max(0, steps().length - 1); save(); render(true); });
   document.querySelector("#go-expert")?.addEventListener("click", () => { state.ride = "expert"; state.phase = "flow"; state.step = 0; state.result = undefined; save(); render(true); });
   document.querySelector("#start-over")?.addEventListener("click", () => { clearSession(SESSION_KEY); Object.assign(state, fallback, { answers: {} }); render(true); });
-  document.querySelector("#download-result")?.addEventListener("click", () => { const r = state.result!; downloadText("you-are-here-next-move.md", `# ${r.headline}\n\n${r.where}\n\n## Your next move\n${r.move}\n\n**Done when:** ${r.finishLine}\n\n## Do now\n${r.doNow.map((item) => `- ${item}`).join("\n")}\n\n## Who to approach\n${r.approach}\n\n## After that\n${r.after}\n\n## Park\n${r.park.map((item) => `- ${item}`).join("\n")}\n\nGenerated locally by You Are Here! from pitch.dog.\n`); });
+  document.querySelector("#download-result")?.addEventListener("click", () => downloadText("you-are-here-next-move.md", routeMarkdown()));
+}
+
+function routeMarkdown(): string {
+  const result = state.result;
+  if (!result) return "# You Are Here!\n\nNo route yet.\n";
+  const expert = result.expertNotes.length ? result.expertNotes.map((item) => `- ${item}`).join("\n") : "- Quick-route assumptions remain visible in the result.";
+  return `# ${result.headline}\n\n${result.where}\n\n## Your next move\n\n${result.move}\n\n**Done when:** ${result.finishLine}\n\n## Do now\n\n${result.doNow.map((item) => `- ${item}`).join("\n")}\n\n## Why this move\n\n${result.because.map((item) => `- ${item}`).join("\n")}\n\n## Who to approach\n\n${result.approach}\n\n## After that\n\n${result.after}\n\n## What the expert context changed\n\n${expert}\n\n## Park for now\n\n${result.park.map((item) => `- ${item}`).join("\n")}\n\n## Assumptions and limits\n\n${result.limitations.map((item) => `- ${item}`).join("\n")}\n\nGenerated locally by You Are Here! from pitch.dog.\n`;
 }
 history.scrollRestoration = "manual"; initialiseThreadCursor(); render(true);

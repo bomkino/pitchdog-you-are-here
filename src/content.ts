@@ -104,7 +104,7 @@ export const PROOF = [
 
 export const AUTHORITIES = [
   { value: "owns_controls", label: "I control the material", detail: "The intended next use is yours to make." },
-  { value: "authorised", label: "I’m authorised for this use", detail: "Permission exists for the next step." },
+  { value: "authorised", label: "I’m authorized for this use", detail: "Permission exists for the next step." },
   { value: "shared_unclear", label: "It’s shared and unclear", detail: "Private work can continue; external use needs clarity." },
   { value: "third_party_unclear", label: "Someone else may control it", detail: "Do not let visual polish impersonate authority." },
 ] as const satisfies readonly Choice[];
