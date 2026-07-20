@@ -1,0 +1,22 @@
+@import "./base.css";
+:root { --accent: var(--acid); --accent-ink: #10110e; }
+.compass-landing .landing-art { background: var(--acid); }
+.compass-landing .landing-copy { padding-block: clamp(2.75rem, 5vw, 5.5rem); }
+.compass-landing h1 { font-size: clamp(4rem, 8vw, 8.4rem); }
+.compass-result .result-hero { padding-block: clamp(3rem, 6vw, 6rem); }
+.compass-result .result-hero h1 { max-width: 13ch; font-size: clamp(3.8rem, 7.5vw, 8.4rem); }
+.answers-inner { width: 100%; }
+.move-stage { display: grid; grid-template-columns: minmax(80px, .25fr) minmax(0, 1.75fr); gap: 2rem; margin: 0 clamp(1.25rem, 7vw, 8rem); padding: clamp(2rem, 6vw, 6rem); background: var(--acid); color: #10110e; }
+.move-number { font-family: var(--mono); font-size: clamp(2rem, 5vw, 5rem); }
+.move-stage h2 { max-width: 18ch; font-size: clamp(3rem, 7vw, 8rem); line-height: .88; letter-spacing: -.06em; }
+.finish-line { max-width: 48rem; margin: 0; font-family: var(--serif); font-size: clamp(1.2rem, 2vw, 1.7rem); }
+.move-sequence { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0 clamp(1.25rem, 7vw, 8rem) clamp(5rem, 10vw, 9rem); border: 1px solid var(--line); border-top: 0; }
+.move-sequence article { min-height: 250px; padding: 1.5rem; border-right: 1px solid var(--line); }
+.move-sequence article:last-child { border: 0; }
+.move-sequence span { font-family: var(--mono); font-size: .68rem; }
+.move-sequence p { margin-top: 5rem; font-family: var(--serif); font-size: clamp(1.25rem, 2vw, 1.8rem); }
+.route-after { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 0 clamp(1.25rem, 7vw, 8rem) clamp(5rem, 10vw, 9rem); gap: 1rem; }
+.route-after article { min-height: 320px; padding: clamp(1.5rem, 4vw, 4rem); background: var(--paper); box-shadow: inset 0 0 0 1px var(--line); }
+.route-after article:nth-child(2) { background: var(--cobalt); color: #fff; }
+.route-after h3 { max-width: 20ch; margin-top: 5rem; font-family: var(--serif); font-size: clamp(1.7rem, 3vw, 3.2rem); line-height: 1.05; }
+@media (max-width: 720px) { .move-stage { grid-template-columns: 1fr; } .move-sequence, .route-after { grid-template-columns: 1fr; } .move-sequence article { min-height: 190px; border-right: 0; border-bottom: 1px solid var(--line); } .move-sequence p { margin-top: 3rem; } }
