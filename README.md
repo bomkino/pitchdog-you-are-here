@@ -4,6 +4,8 @@
 
 # You Are Here!
 
+**[Open the live tool](https://pitchdog-you-are-here.dog-pitch.chatgpt.site)**
+
 **Find the next useful move. The answer is not always another deck.**
 
 You Are Here maps the live pitch situation—film, advertising, startups, education, and more—then gives one bounded next move with the reason, what to bring, and what not to waste time building yet.

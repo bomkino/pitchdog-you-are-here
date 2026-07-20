@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A deterministic next-move compass for pitches from pitch.dog.",
   "license": "AGPL-3.0-or-later",
-  "homepage": "https://github.com/bomkino/pitchdog-you-are-here",
+  "homepage": "https://pitchdog-you-are-here.dog-pitch.chatgpt.site",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bomkino/pitchdog-you-are-here.git"
