@@ -4,7 +4,7 @@
 
 # You Are Here!
 
-**[Open the live tool](https://pitchdog-you-are-here.dog-pitch.chatgpt.site)**
+**[Open the live tool](https://pitchdog-you-are-here.pages.dev)**
 
 **Find the next useful move. The answer is not always another deck.**
 
