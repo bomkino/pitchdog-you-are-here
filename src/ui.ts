@@ -20,10 +20,11 @@ export function escapeHTML(value: string): string {
 
 export function readSession<T>(key: string, fallback: T): T {
   try {
+    const base = structuredClone(fallback);
     const saved = sessionStorage.getItem(key);
-    return saved ? { ...fallback, ...JSON.parse(saved) as object } : fallback;
+    return saved ? { ...base, ...JSON.parse(saved) as object } : base;
   } catch {
-    return fallback;
+    return structuredClone(fallback);
   }
 }
 
